@@ -21,4 +21,6 @@ from django.urls import include, path
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("recipes.urls", namespace="recipes")),
+    path("accounts/", include("django.contrib.auth.urls")),  # login/logout
+    path("users/", include("users.urls", namespace="users")),
 ]

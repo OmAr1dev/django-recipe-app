@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .models import Recipe
@@ -29,6 +30,7 @@ def recipe_list(request):
     return render(request, "recipes/recipe_list.html", {"recipes": recipes})
 
 
+@login_required
 def recipe_detail(request, pk):
     """
     View to display details of a single recipe by primary key.
@@ -37,6 +39,7 @@ def recipe_detail(request, pk):
     return render(request, "recipes/recipe_detail.html", {"recipe": recipe})
 
 
+@login_required
 def recipe_create(request):
     """
     View to create a new recipe using a form.
