@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .models import Recipe
@@ -24,10 +25,19 @@ class RecipeForm(forms.ModelForm):
 
 def recipe_list(request):
     """
-    View to display all recipes in the database.
+    View to display all recipes with optional search by title or ingredient.
     """
-    recipes = Recipe.objects.all().order_by("-created_at")
-    return render(request, "recipes/recipe_list.html", {"recipes": recipes})
+    query = request.GET.get("q")  # get search query from URL
+    if query:
+        recipes = Recipe.objects.filter(
+            Q(title__icontains=query) | Q(ingredients__icontains=query)
+        ).order_by("-created_at")
+    else:
+        recipes = Recipe.objects.all().order_by("-created_at")
+
+    return render(
+        request, "recipes/recipe_list.html", {"recipes": recipes, "query": query}
+    )
 
 
 @login_required

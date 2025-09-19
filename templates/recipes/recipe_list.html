@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
+<form method="get" action="{% url 'recipes:list' %}">
+    <input type="text" name="q" placeholder="Search recipes..." value="{{ query|default:'' }}">
+    <button type="submit">Search</button>
+</form>
 <h1>All Recipes</h1>
 <a href="{% url 'recipes:create' %}">Add New Recipe</a>
 <ul>
