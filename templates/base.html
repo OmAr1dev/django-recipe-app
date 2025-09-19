@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recipe Sharing App</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        header { margin-bottom: 20px; }
+        nav a { margin-right: 15px; text-decoration: none; color: #333; }
+        nav a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Recipe Sharing App</h1>
+        <nav>
+            <a href="{% url 'recipes:list' %}">Home</a>
+            <a href="{% url 'recipes:create' %}">Add Recipe</a>
+
+        </nav>
+    </header>
+
+    {% block content %}
+    <!-- Page-specific content will be injected here -->
+    {% endblock %}
+
+    <footer style="margin-top: 40px; border-top: 1px solid #ccc; padding-top: 10px;">
+        <p>&copy; 2025 Recipe Sharing App</p>
+    </footer>
+</body>
+</html>
