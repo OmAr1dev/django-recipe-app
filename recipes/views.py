@@ -64,3 +64,38 @@ def recipe_create(request):
     else:
         form = RecipeForm()
     return render(request, "recipes/recipe_form.html", {"form": form})
+
+@login_required
+def recipe_edit(request, pk):
+    """
+    View to edit an existing recipe by its primary key.
+    Only the author can edit their recipe.
+    """
+    recipe = get_object_or_404(Recipe, pk=pk)
+
+    if recipe.author != request.user:
+        return redirect("recipes:detail", pk=pk)  # prevent editing others' recipes
+
+    if request.method == "POST":
+        form = RecipeForm(request.POST, instance=recipe)
+        if form.is_valid():
+            form.save()
+            return redirect("recipes:detail", pk=recipe.pk)
+    else:
+        form = RecipeForm(instance=recipe)
+
+    return render(request, "recipes/recipe_form.html", {"form": form, "recipe": recipe})
+
+@login_required
+def recipe_delete(request, pk):
+    """
+    View to delete a recipe created by the logged-in user.
+    Only the author can delete their recipe.
+    """
+    recipe = get_object_or_404(Recipe, pk=pk)
+
+    if recipe.author == request.user:
+        if request.method == "POST":
+            recipe.delete()
+            return redirect("recipes:list")
+    return render(request, "recipes/recipe_confirm_delete.html", {"recipe": recipe})

@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
+{% if user.is_authenticated and recipe.author == user %}
+    <a href="{% url 'recipes:edit' recipe.pk %}">Edit</a>
+    <a href="{% url 'recipes:delete' recipe.pk %}">Delete</a>
+{% endif %}
 <h1>{{ recipe.title }}</h1>
 <p>{{ recipe.description }}</p>
 
